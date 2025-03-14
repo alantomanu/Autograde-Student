@@ -1,32 +1,161 @@
 "use client"
 import React, { useState } from 'react';
-
-import { FaGoogle, FaUser, FaLock, FaIdCard } from 'react-icons/fa';
+import { useSearchParams } from 'next/navigation';
+import { signIn } from "next-auth/react";
+import GoogleButton from "@/components/GoogleButton";
+import {  FaUser, FaLock, FaIdCard } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 
-export default function LoginSignupPage() {
+export default function SignupPage() {
+  const searchParams = useSearchParams();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     studentId: '',
-    studentName: '',
-    email: '',
+    name: searchParams.get('name') || '',
+    email: searchParams.get('email') || '',
     password: '',
     confirmPassword: '',
+    profilePictureUrl: searchParams.get('image') || '',
   });
+
+  // Check if we have OAuth data from URL parameters
+  const isOAuth = Boolean(
+    searchParams.get('oauth') === 'google' && 
+    searchParams.get('email') && 
+    searchParams.get('oauthId')
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signIn('google', {
+        redirect: false,
+      });
+
+      if (result?.error) {
+        console.error('Google Sign-In failed:', result.error);
+        alert('Google Sign-In failed: ' + result.error);
+      }
+      // The redirect will be handled by NextAuth callback
+    } catch (error) {
+      console.error('Error during Google Sign-In:', error);
+      alert('Google Sign-In failed');
+    }
+  };
+
+  const handleOAuthRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would normally handle form submission to your backend
+    
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          studentId: formData.studentId,
+          name: searchParams.get('name'),
+          email: searchParams.get('email'),
+          oauthId: searchParams.get('oauthId'),
+          profilePictureUrl: searchParams.get('image'),
+          password: null, // No password for OAuth users
+        }),
+      });
+
+      const data = await res.json();
+      
+      if (res.ok) {
+        // After successful registration, sign in with Google
+        await signIn('google', { 
+          callbackUrl: '/dashboard',
+        });
+      } else {
+        alert(data.error || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Registration failed');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (!isOAuth && formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          studentId: formData.studentId,
+          name: formData.name,
+          email: formData.email,
+          password: isOAuth ? null : formData.password,
+          oauthId: searchParams.get('oauthId') || null,
+          profilePictureUrl: formData.profilePictureUrl,
+        }),
+      });
+
+      const data = await res.json();
+      
+      if (res.ok) {
+        // Sign in the user automatically after registration
+        await signIn('google', { callbackUrl: '/dashboard' });
+      } else {
+        alert(data.error || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Registration failed');
+    }
   };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
+
+  // If we have OAuth data, show the student ID form
+  if (isOAuth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
+        <div className="w-full max-w-md space-y-8">
+          <h2 className="text-center text-2xl font-bold">Complete Your Registration</h2>
+          <p className="text-center text-gray-600">
+            Welcome {searchParams.get('name')}! Please enter your student ID to complete registration
+          </p>
+          
+          <form onSubmit={handleOAuthRegistration} className="mt-8 space-y-6">
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <FaIdCard />
+              </div>
+              <input
+                type="text"
+                name="studentId"
+                value={formData.studentId}
+                onChange={handleChange}
+                placeholder="Student ID"
+                className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
+              />
+            </div>
+            
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white"
+            >
+              Complete Registration
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
@@ -89,9 +218,10 @@ export default function LoginSignupPage() {
               </h1>
               
               <div className="flex justify-center">
-                <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 transition-colors hover:bg-gray-50">
-                  <FaGoogle className="text-gray-600" />
-                </button>
+                <GoogleButton 
+                  onClick={handleGoogleSignIn}
+                  text="Continue with Google"
+                />
               </div>
               
               <div className="relative">
@@ -109,8 +239,8 @@ export default function LoginSignupPage() {
                     </div>
                     <input
                       type="text"
-                      name="studentName"
-                      value={formData.studentName}
+                      name="name"
+                      value={formData.name}
                       onChange={handleChange}
                       placeholder="Full Name"
                       className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-400 placeholder:opacity-70"
