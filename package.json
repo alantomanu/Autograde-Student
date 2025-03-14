@@ -9,19 +9,44 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/theme": "^2.4.12",
+    "@tabler/icons-react": "^3.31.0",
+    "autoprefixer": "^10.4.21",
+    "bcryptjs": "^3.0.2",
+    "browserslist": "^4.24.4",
+    "class-variance-authority": "^0.7.1",
+    "drizzle-kit": "^0.30.5",
+    "drizzle-orm": "^0.40.0",
+    "framer-motion": "^12.5.0",
+    "next": "15.2.2",
+    "next-auth": "^4.24.11",
+    "pg": "^8.14.0",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.2.2"
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.14",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@radix-ui/react-label": "^2.1.2",
+    "@tailwindcss/postcss": "^4.0.14",
     "@types/node": "^20",
+    "@types/pg": "^8.11.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
-    "@eslint/eslintrc": "^3"
-  }
+    "install": "^0.13.0",
+    "npm": "^11.2.0",
+    "typescript": "^5"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead"
+  ]
 }
