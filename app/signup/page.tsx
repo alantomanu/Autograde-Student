@@ -1,13 +1,14 @@
 "use client"
 import React, { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from "next-auth/react";
 import GoogleButton from "@/components/GoogleButton";
-import {  FaUser, FaLock, FaIdCard } from 'react-icons/fa';
+import { FaUser, FaLock, FaIdCard } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     studentId: '',
@@ -17,6 +18,13 @@ export default function SignupPage() {
     confirmPassword: '',
     profilePictureUrl: searchParams.get('image') || '',
   });
+
+  const [credentials, setCredentials] = useState({
+    studentId: '',
+    password: '',
+  });
+
+  const [error, setError] = useState<string | null>(null);
 
   // Check if we have OAuth data from URL parameters
   const isOAuth = Boolean(
@@ -36,46 +44,10 @@ export default function SignupPage() {
       });
 
       if (result?.error) {
-        console.error('Google Sign-In failed:', result.error);
-        alert('Google Sign-In failed: ' + result.error);
+        setError('Google Sign-In failed: ' + result.error);
       }
-      // The redirect will be handled by NextAuth callback
-    } catch (error) {
-      console.error('Error during Google Sign-In:', error);
-      alert('Google Sign-In failed');
-    }
-  };
-
-  const handleOAuthRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          studentId: formData.studentId,
-          name: searchParams.get('name'),
-          email: searchParams.get('email'),
-          oauthId: searchParams.get('oauthId'),
-          profilePictureUrl: searchParams.get('image'),
-          password: null, // No password for OAuth users
-        }),
-      });
-
-      const data = await res.json();
-      
-      if (res.ok) {
-        // After successful registration, sign in with Google
-        await signIn('google', { 
-          callbackUrl: '/dashboard',
-        });
-      } else {
-        alert(data.error || 'Registration failed');
-      }
-    } catch (error) {
-      console.error('Registration error:', error);
-      alert('Registration failed');
+    } catch  {
+      setError('Google Sign-In failed');
     }
   };
 
@@ -83,7 +55,7 @@ export default function SignupPage() {
     e.preventDefault();
     
     if (!isOAuth && formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      setError("Passwords don't match!");
       return;
     }
 
@@ -107,55 +79,37 @@ export default function SignupPage() {
         // Sign in the user automatically after registration
         await signIn('google', { callbackUrl: '/dashboard' });
       } else {
-        alert(data.error || 'Registration failed');
+        setError(data.error || 'Registration failed');
       }
-    } catch (error) {
-      console.error('Registration error:', error);
-      alert('Registration failed');
+    } catch  {
+      setError('Registration failed');
+    }
+  };
+
+  const handleManualSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const result = await signIn('credentials', {
+        identifier: credentials.studentId,
+        password: credentials.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Invalid credentials');
+      } else {
+        router.push('/dashboard');
+      }
+    } catch  {
+      setError('Login failed');
     }
   };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setError(null); // Clear error when toggling forms
   };
-
-  // If we have OAuth data, show the student ID form
-  if (isOAuth) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
-        <div className="w-full max-w-md space-y-8">
-          <h2 className="text-center text-2xl font-bold">Complete Your Registration</h2>
-          <p className="text-center text-gray-600">
-            Welcome {searchParams.get('name')}! Please enter your student ID to complete registration
-          </p>
-          
-          <form onSubmit={handleOAuthRegistration} className="mt-8 space-y-6">
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                <FaIdCard />
-              </div>
-              <input
-                type="text"
-                name="studentId"
-                value={formData.studentId}
-                onChange={handleChange}
-                placeholder="Student ID"
-                className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-              />
-            </div>
-            
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white"
-            >
-              Complete Registration
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
@@ -213,7 +167,7 @@ export default function SignupPage() {
             </div>
             
             <div className="space-y-6">
-              <h1 className="text-2xl font-bold text-gray-800 md:text-3xl">
+              <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
                 {isLogin ? 'Sign In' : 'Create Account'}
               </h1>
               
@@ -223,18 +177,59 @@ export default function SignupPage() {
                   text="Continue with Google"
                 />
               </div>
+
+              {error && (
+                <div className="text-red-600 text-center">
+                  {error}
+                </div>
+              )}
               
-              <div className="relative">
-                <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 px-4 text-center text-sm text-gray-500">
-                  or use your {isLogin ? 'student ID' : 'email for registration'}
-                </p>
-                <div className="my-4 border-t border-gray-200"></div>
-              </div>
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {!isLogin && (
+              {isLogin ? (
+                <form className="mt-8 space-y-6" onSubmit={handleManualSignIn}>
+                  <div className="space-y-4 rounded-md shadow-sm">
+                    <div className="relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
+                        <FaIdCard />
+                      </div>
+                      <input
+                        id="studentId"
+                        name="studentId"
+                        type="text"
+                        required
+                        className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                        placeholder="Student ID"
+                        value={credentials.studentId}
+                        onChange={(e) => setCredentials({ ...credentials, studentId: e.target.value })}
+                      />
+                    </div>
+                    <div className="relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
+                        <FaLock />
+                      </div>
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                        className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                        placeholder="Password"
+                        value={credentials.password}
+                        onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
+                  >
+                    Sign in
+                  </button>
+                </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
                       <FaUser />
                     </div>
                     <input
@@ -243,30 +238,28 @@ export default function SignupPage() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Full Name"
-                      className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-400 placeholder:opacity-70"
+                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required={!isLogin}
                     />
                   </div>
-                )}
-                
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                    <FaIdCard />
-                  </div>
-                  <input
-                    type="text"
-                    name="studentId"
-                    value={formData.studentId}
-                    onChange={handleChange}
-                    placeholder="Student ID"
-                    className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-400 placeholder:opacity-70"
-                    required
-                  />
-                </div>
-                
-                {!isLogin && (
+                  
                   <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
+                      <FaIdCard />
+                    </div>
+                    <input
+                      type="text"
+                      name="studentId"
+                      value={formData.studentId}
+                      onChange={handleChange}
+                      placeholder="Student ID"
+                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
                       <MdEmail />
                     </div>
                     <input
@@ -275,30 +268,28 @@ export default function SignupPage() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Email"
-                      className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-400 placeholder:opacity-70"
+                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required={!isLogin}
                     />
                   </div>
-                )}
-                
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                    <FaLock />
-                  </div>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-400 placeholder:opacity-70"
-                    required
-                  />
-                </div>
-                
-                {!isLogin && (
+                  
                   <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
+                      <FaLock />
+                    </div>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Password"
+                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
                       <FaLock />
                     </div>
                     <input
@@ -307,41 +298,33 @@ export default function SignupPage() {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="Confirm Password"
-                      className="w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-gray-400 placeholder:opacity-70"
+                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required={!isLogin}
                     />
                   </div>
-                )}
-                
-                {isLogin && (
-                  <div className="flex justify-end">
-                    <a href="#" className="text-sm text-purple-600 hover:underline">
-                      Forgot Password?
-                    </a>
+                  
+                  <button
+                    type="submit"
+                    className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
+                  >
+                    SIGN UP
+                  </button>
+                  
+                  {/* Mobile toggle */}
+                  <div className="pt-4 text-center md:hidden">
+                    <p className="text-sm text-gray-600">
+                      Already have an account?{" "}
+                      <button
+                        type="button"
+                        onClick={toggleForm}
+                        className="font-medium text-purple-600 hover:underline"
+                      >
+                        Sign In
+                      </button>
+                    </p>
                   </div>
-                )}
-                
-                <button
-                  type="submit"
-                  className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
-                >
-                  {isLogin ? 'SIGN IN' : 'SIGN UP'}
-                </button>
-                
-                {/* Mobile toggle */}
-                <div className="pt-4 text-center md:hidden">
-                  <p className="text-sm text-gray-600">
-                    {isLogin ? "Don't have an account? " : "Already have an account? "}
-                    <button
-                      type="button"
-                      onClick={toggleForm}
-                      className="font-medium text-purple-600 hover:underline"
-                    >
-                      {isLogin ? 'Sign Up' : 'Sign In'}
-                    </button>
-                  </p>
-                </div>
-              </form>
+                </form>
+              )}
             </div>
           </div>
         </div>
