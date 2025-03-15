@@ -25,15 +25,15 @@ export default function App() {
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       const session = await getSession();
       if (session) {
         setIsLoggedIn(true);
-        setUserName(session.user.name || "Jane Doe");
-        setProfilePictureUrl(session.user.image || "");
+        setUserName(session.user?.name || "Jane Doe");
+        setProfilePictureUrl(session.user?.image || "");
       }
     };
     fetchUserDetails();
@@ -41,7 +41,8 @@ export default function App() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const dropdownElement = dropdownRef.current as HTMLDivElement | null;
+      if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
         setShowDropdown(false);
       }
     }
@@ -57,48 +58,44 @@ export default function App() {
   };
 
   const handleLogout = async () => {
-    console.log("Logging out...");
     await signOut({ redirect: false });
     setIsLoggedIn(false);
     setShowDropdown(false);
-    console.log("Logged out");
   };
 
   return (
-    <div className="w-full">
-      <nav className="bg-white border-b border-gray-100 shadow-sm px-8 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo and Brand */}
-          <div className="flex items-center space-x-3">
+    <div className="w-full py-6 flex justify-center bg-white">
+      <div className="relative z-1 w-[80%] max-w-2xl">
+        {/* Oval Navbar Container */}
+        <nav className="bg-white rounded-full px-12 py-3 shadow-lg flex items-center justify-between border border-gray-100 w-full">
+          {/* Logo Section */}
+          <div className="flex items-center space-x-2">
             <AcmeLogo />
-            <span className="font-bold text-xl text-gray-600">Autograde</span>
+            <span className="font-bold text-gray-700 text-lg ">Autograde</span>
           </div>
-
-          {/* Right Side - Auth Section */}
-          <div className="flex items-center">
+          
+          {/* Authentication Section */}
+          <div className="flex items-center space-x-4">
             {isLoggedIn ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-900 font-semibold text-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-gray-900 font-bold ">
                   {userName}
                 </span>
                 <div className="relative" ref={dropdownRef}>
                   <button
-                    className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                    onClick={() => {
-                      console.log("Profile picture clicked");
-                      setShowDropdown(!showDropdown);
-                    }}
+                    className="flex items-center justify-center h-9 w-9 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    onClick={() => setShowDropdown(!showDropdown)}
                   >
                     {profilePictureUrl ? (
                       <Image
                         src={profilePictureUrl}
                         alt="Profile"
                         className="rounded-full"
-                        width={40}
-                        height={40}
+                        width={36}
+                        height={36}
                       />
                     ) : (
-                      <User size={20} className="text-gray-700" />
+                      <User size={18} className="text-gray-700" />
                     )}
                   </button>
                   {showDropdown && (
@@ -126,14 +123,17 @@ export default function App() {
             ) : (
               <button
                 onClick={handleSignUpRedirect}
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium px-6 py-2.5 rounded-full hover:shadow-lg hover:scale-105 transform transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium px-5 py-2 rounded-full hover:shadow-md hover:scale-105 transform transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 text-sm"
               >
                 Sign Up
               </button>
             )}
           </div>
-        </div>
-      </nav>
+        </nav>
+        
+        {/* Decorative background pill */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-full blur-md -z-10 opacity-75"></div>
+      </div>
     </div>
   );
 }
