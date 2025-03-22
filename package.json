@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "npx next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.8.0",
     "@heroui/navbar": "^2.2.14",
     "@heroui/react": "^2.7.5",
     "@heroui/system": "^2.4.12",

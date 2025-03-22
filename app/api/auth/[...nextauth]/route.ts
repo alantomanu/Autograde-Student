@@ -29,6 +29,11 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      authorization: {
+        params: {
+          prompt: "select_account",
+        }
+      }
     }),
     CredentialsProvider({
       name: "credentials",
@@ -114,15 +119,31 @@ export const authOptions: NextAuthOptions = {
         session.user.studentId = token.studentId as string;
       }
       return session;
-    }
+    },
+    async redirect({ url, baseUrl }) {
+      // Always allow callback URLs
+      if (url.startsWith('/api/auth/callback/')) {
+        return url;
+      }
+      // Allows relative callback URLs
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      // Allows callback URLs on the same origin
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      return baseUrl;
+    },
   },
   pages: {
-    signIn: '/login',
+    signIn: '/signup',
     error: '/auth/error',
   },
   session: {
     strategy: 'jwt',
   },
+  debug: true,
 };
 
 const handler = NextAuth(authOptions);

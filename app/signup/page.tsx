@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { signIn } from "next-auth/react";
 import GoogleButton from "@/components/GoogleButton";
 import { FaUser, FaLock, FaIdCard } from 'react-icons/fa';
@@ -8,7 +8,6 @@ import { MdEmail } from 'react-icons/md';
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     studentId: '',
@@ -24,7 +23,11 @@ export default function SignupPage() {
     password: '',
   });
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    searchParams.get('error') === 'OAuthSignin' 
+      ? 'Failed to sign in with Google. Please try again.' 
+      : null
+  );
 
   // Check if we have OAuth data from URL parameters
   const isOAuth = Boolean(
@@ -39,15 +42,12 @@ export default function SignupPage() {
 
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signIn('google', {
-        redirect: false,
+      await signIn('google', {
+        callbackUrl: '/',
+        redirect: true,
       });
-
-      if (result?.error) {
-        setError('Google Sign-In failed: ' + result.error);
-      }
     } catch  {
-      setError('Google Sign-In failed');
+      setError('Failed to sign in with Google. Please try again.');
     }
   };
 
@@ -77,7 +77,7 @@ export default function SignupPage() {
       
       if (res.ok) {
         // Sign in the user automatically after registration
-        await signIn('google', { callbackUrl: '/dashboard' });
+        await signIn('google', { callbackUrl: '/' });
       } else {
         setError(data.error || 'Registration failed');
       }
@@ -90,19 +90,14 @@ export default function SignupPage() {
     e.preventDefault();
     
     try {
-      const result = await signIn('credentials', {
+      await signIn('credentials', {
         identifier: credentials.studentId,
         password: credentials.password,
-        redirect: false,
+        callbackUrl: '/dashboard',
+        redirect: true,
       });
-
-      if (result?.error) {
-        setError('Invalid credentials');
-      } else {
-        router.push('/dashboard');
-      }
     } catch  {
-      setError('Login failed');
+      setError('Invalid credentials');
     }
   };
 
