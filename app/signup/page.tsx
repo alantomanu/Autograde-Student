@@ -28,6 +28,7 @@ export default function SignupPage() {
       ? 'Failed to sign in with Google. Please try again.' 
       : null
   );
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Check if we have OAuth data from URL parameters
   const isOAuth = Boolean(
@@ -46,7 +47,7 @@ export default function SignupPage() {
         callbackUrl: '/',
         redirect: true,
       });
-    } catch  {
+    } catch {
       setError('Failed to sign in with Google. Please try again.');
     }
   };
@@ -56,6 +57,7 @@ export default function SignupPage() {
     
     if (!isOAuth && formData.password !== formData.confirmPassword) {
       setError("Passwords don't match!");
+      setSuccessMessage(null);
       return;
     }
 
@@ -76,13 +78,17 @@ export default function SignupPage() {
       const data = await res.json();
       
       if (res.ok) {
-        // Sign in the user automatically after registration
-        await signIn('google', { callbackUrl: '/' });
+        // After successful registration, switch to login mode
+        setIsLogin(true);
+        setSuccessMessage('Registration successful! Sign in.');
+        setError(null);
       } else {
         setError(data.error || 'Registration failed');
+        setSuccessMessage(null);
       }
-    } catch  {
+    } catch {
       setError('Registration failed');
+      setSuccessMessage(null);
     }
   };
 
@@ -90,13 +96,20 @@ export default function SignupPage() {
     e.preventDefault();
     
     try {
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         identifier: credentials.studentId,
         password: credentials.password,
-        callbackUrl: '/dashboard',
-        redirect: true,
+        callbackUrl: '/',
+        redirect: false, // Don't redirect automatically
       });
-    } catch  {
+
+      if (result?.error) {
+        setError('Invalid credentials');
+      } else {
+        // Manually redirect on success
+        window.location.href = '/';
+      }
+    } catch {
       setError('Invalid credentials');
     }
   };
@@ -176,6 +189,12 @@ export default function SignupPage() {
               {error && (
                 <div className="text-red-600 text-center">
                   {error}
+                </div>
+              )}
+              
+              {successMessage && (
+                <div className="text-green-600 text-center">
+                  {successMessage}
                 </div>
               )}
               
