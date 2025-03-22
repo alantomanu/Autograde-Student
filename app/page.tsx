@@ -126,15 +126,22 @@ export default function Dashboard() {
     'Class Average': course.classAverage,
   }));
 
-  // Prepare data for pie chart
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+  // Prepare data for pie chart with better calculations
+  const COLORS = ['#22C55E', '#3B82F6', '#EAB308', '#F97316', '#EF4444'];
+  const calculateRankCategory = () => {
+    const rankPercentile = (overallPerformance.overallRank / overallPerformance.totalStudents) * 100;
+    
+    if (rankPercentile <= 10) return { name: 'Top 10%', color: COLORS[0] };
+    if (rankPercentile <= 25) return { name: 'Top 25%', color: COLORS[1] };
+    if (rankPercentile <= 50) return { name: 'Top 50%', color: COLORS[2] };
+    if (rankPercentile <= 75) return { name: 'Top 75%', color: COLORS[3] };
+    return { name: 'Bottom 25%', color: COLORS[4] };
+  };
+
+  const rankCategory = calculateRankCategory();
   const pieChartData = [
-    { name: 'Top 10%', value: overallPerformance.overallRank <= Math.ceil(overallPerformance.totalStudents * 0.1) ? 1 : 0 },
-    { name: 'Top 25%', value: overallPerformance.overallRank <= Math.ceil(overallPerformance.totalStudents * 0.25) && overallPerformance.overallRank > Math.ceil(overallPerformance.totalStudents * 0.1) ? 1 : 0 },
-    { name: 'Top 50%', value: overallPerformance.overallRank <= Math.ceil(overallPerformance.totalStudents * 0.5) && overallPerformance.overallRank > Math.ceil(overallPerformance.totalStudents * 0.25) ? 1 : 0 },
-    { name: 'Top 75%', value: overallPerformance.overallRank <= Math.ceil(overallPerformance.totalStudents * 0.75) && overallPerformance.overallRank > Math.ceil(overallPerformance.totalStudents * 0.5) ? 1 : 0 },
-    { name: 'Bottom 25%', value: overallPerformance.overallRank > Math.ceil(overallPerformance.totalStudents * 0.75) ? 1 : 0 },
-  ].filter(item => item.value > 0);
+    { name: rankCategory.name, value: 1 }
+  ];
 
   return (
     <>
@@ -187,32 +194,41 @@ export default function Dashboard() {
             <div>
               <div className="bg-white rounded-lg shadow-md p-6 h-full">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Rank Distribution</h3>
-                <div className="h-64 flex items-center justify-center">
+                <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={pieChartData}
                         cx="50%"
                         cy="50%"
-                        labelLine={false}
+                        innerRadius={60}
                         outerRadius={80}
-                        fill="#8884d8"
+                        fill={rankCategory.color}
+                        paddingAngle={0}
                         dataKey="value"
-                        label={({ name }) => name}
                       >
-                        {pieChartData.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${entry.name}`}
-                            fill={COLORS[index % COLORS.length]} 
-                          />
-                        ))}
+                        <Cell key={`cell-${rankCategory.name}`} fill={rankCategory.color} />
                       </Pie>
+                      <text
+                        x="50%"
+                        y="50%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        className="text-xl font-bold"
+                      >
+                        {rankCategory.name}
+                      </text>
                       <Tooltip />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="text-center mt-2 text-sm text-gray-600">
-                  You are in the top {Math.ceil((overallPerformance.overallRank / overallPerformance.totalStudents) * 100)}%
+                <div className="text-center mt-4">
+                  <p className="text-sm text-gray-600">
+                    Your rank: <span className="font-semibold">{overallPerformance.overallRank}</span> out of <span className="font-semibold">{overallPerformance.totalStudents}</span>
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Top <span className="font-semibold">{Math.ceil((overallPerformance.overallRank / overallPerformance.totalStudents) * 100)}%</span> of your class
+                  </p>
                 </div>
               </div>
             </div>

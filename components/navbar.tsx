@@ -59,7 +59,7 @@ export default function App() {
         {/* Oval Navbar Container */}
         <nav className="bg-white rounded-full px-4 sm:px-12 py-2 sm:py-3 shadow-lg flex items-center justify-between border border-gray-100 w-full relative">
           {/* Logo Section */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             <Image 
               src="/logo.png"
               alt="Logo"
@@ -96,18 +96,14 @@ export default function App() {
                     )}
                   </button>
                   {showDropdown && (
-                    <div className="absolute transform -translate-x-1/2 left-1/2 mt-4 w-48 sm:w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-[100] overflow-hidden">
-                      <div className="px-4 py-3 border-b border-gray-100">
-                        <p className="text-sm font-bold text-gray-900">{userName}</p>
-                        <p className="text-xs text-gray-500 truncate">Student</p>
-                      </div>
+                    <div className="absolute right-0 sm:right-auto sm:transform sm:-translate-x-1/2 sm:left-1/2 mt-5 w-32 bg-white border border-gray-200 rounded-xl shadow-lg z-[100] overflow-hidden">
                       <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-200 group"
+                        className="flex items-center justify-center w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-200 group"
                       >
                         <LogOut 
                           size={18} 
-                          className="mr-3 text-gray-400 group-hover:text-red-500 transition-colors" 
+                          className="mr-2 text-gray-400 group-hover:text-red-500 transition-colors" 
                         />
                         <span className="group-hover:text-red-600 font-medium">
                           Sign out
