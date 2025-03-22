@@ -4,6 +4,22 @@ import { eq, and } from "drizzle-orm";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 
+// Add interface for raw feedback item
+interface RawFeedbackItem {
+    mark: string | number;
+    maxMark: string | number;
+    reason?: string;
+    questionNumber?: string;
+}
+
+// Add interface for processed feedback item
+interface FeedbackItem {
+    mark: number;
+    maxMark: number;
+    reason: string;
+    questionNumber: string;
+}
+
 export async function GET(
     request: Request,
     { params }: { params: { id: string } }
@@ -23,8 +39,7 @@ export async function GET(
             return NextResponse.json({ error: "Student not found" }, { status: 404 });
         }
 
-        // Await params before using them
-        const courseId = params.id; // Await the params
+        const courseId = params.id;
 
         // Fetch the score and course details
         const score = await db
@@ -43,7 +58,7 @@ export async function GET(
             .leftJoin(courses, eq(scores.courseId, courses.id))
             .where(
                 and(
-                    eq(scores.courseId, parseInt(courseId)), // Use the awaited courseId
+                    eq(scores.courseId, parseInt(courseId)),
                     eq(scores.studentId, student.studentId)
                 )
             )
@@ -59,14 +74,42 @@ export async function GET(
                 percentage: scores.percentage,
             })
             .from(scores)
-            .where(eq(scores.courseId, parseInt(courseId))); // Use the awaited courseId
+            .where(eq(scores.courseId, parseInt(courseId)));
 
         const classAverage = allScores.reduce((acc, curr) => acc + curr.percentage, 0) / allScores.length;
         const betterScores = allScores.filter(s => s.percentage > score[0].percentage);
         const rank = betterScores.length + 1;
 
+        // Initialize parsedFeedback with proper type
+        let parsedFeedback: FeedbackItem[] = [];
+        
+        if (score[0].feedback) {
+            try {
+                let rawFeedback: RawFeedbackItem[];
+                
+                if (typeof score[0].feedback === 'string') {
+                    rawFeedback = JSON.parse(score[0].feedback);
+                } else {
+                    rawFeedback = score[0].feedback as RawFeedbackItem[];
+                }
+                
+                // Ensure each feedback item has the required properties
+                parsedFeedback = rawFeedback.map(item => ({
+                    mark: Number(item.mark) || 0,
+                    maxMark: Number(item.maxMark) || 0,
+                    reason: item.reason || '',
+                    questionNumber: item.questionNumber || '',
+                }));
+            } catch (error) {
+                console.error('Error parsing feedback:', error);
+                parsedFeedback = [];
+            }
+        }
+
+        // Return the processed data
         return NextResponse.json({
             ...score[0],
+            feedback: parsedFeedback,
             rank,
             classAverage: Math.round(classAverage * 100) / 100,
         });
