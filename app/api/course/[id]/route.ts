@@ -22,9 +22,12 @@ interface FeedbackItem {
 
 export async function GET(
     request: Request,
-    { params }: { params: { id: string } }
+    context: { params: { id: string } }
 ) {
     try {
+        const { id } = await context.params;  // Await the entire params object
+        const courseId = id;
+        
         const session = await getServerSession();
         if (!session?.user?.email) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -39,9 +42,7 @@ export async function GET(
             return NextResponse.json({ error: "Student not found" }, { status: 404 });
         }
 
-        const courseId = params.id;
-
-        // Fetch the score and course details
+        // Use the awaited courseId
         const score = await db
             .select({
                 id: scores.id,

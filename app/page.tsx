@@ -250,7 +250,7 @@ export default function Dashboard() {
                   </div>
                   <div className="mb-4">
                     <div className="text-sm text-gray-600 mb-1">Score: {course.totalMarks}/{course.maxMarks}</div>
-                    <div className="text-sm text-gray-600">Instructor: {course.teacherName}</div>
+                    
                   </div>
                   <div className="flex justify-between items-center">
                     <div className="text-sm text-gray-600">

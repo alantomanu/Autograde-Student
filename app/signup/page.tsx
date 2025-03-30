@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import GoogleButton from "@/components/GoogleButton";
 import { FaUser, FaLock, FaIdCard } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import Image from 'next/image';
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
@@ -134,7 +135,19 @@ export default function SignupPage() {
             <div className="mb-10">
               <div className="flex items-center space-x-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/20">
-                  <span className="text-xl font-bold">AG</span>
+                  
+                <Image 
+                  src="/logo.png"
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  style={{ width: 'auto', height: 'auto' }}
+                  className="cursor-pointer filter invert brightness-10"
+                  priority
+                />
+                <span className="text-xl font-bold"> 
+                   
+            </span>
                 </div>
                 <h2 className="text-xl font-semibold">AutoGrade</h2>
               </div>
@@ -165,7 +178,7 @@ export default function SignupPage() {
           
           {/* Right panel - Create Account / Login */}
           <div className="bg-white/80 p-8 md:w-7/12 md:p-10">
-            <div className="mb-8 md:hidden">
+            <div className="mb-8 md:hidden pd-6">
               <button 
                 onClick={toggleForm} 
                 className="text-sm font-medium text-purple-600"
