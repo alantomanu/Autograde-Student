@@ -49,7 +49,7 @@ interface StudentData {
 export default function Dashboard() {
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [loading, setLoading] = useState(true);
- 
+  const [loadingCourseId, setLoadingCourseId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchStudentData = async () => {
@@ -76,11 +76,62 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
-        </div>
+      <div className="min-h-screen bg-transparent">
+        <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          {/* Skeleton for Student Overview */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="mb-4 md:mb-0">
+                <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
+                <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="flex flex-col items-center md:items-end">
+                <div className="h-10 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                <div className="h-4 w-40 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Skeleton for Performance Overview */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div className="lg:col-span-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Skeleton for Course Cards */}
+          <div className="h-8 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {[1, 2, 3].map((index) => (
+              <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
+                <div className="h-2 bg-gray-200"></div>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                      <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                  <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
+                  <div className="flex justify-between items-center">
+                    <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
       </div>
     );
   }
@@ -253,11 +304,28 @@ export default function Dashboard() {
                   </div>
                   <Link 
                     href={`/course/${course.courseId}`}
-                    className="inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors duration-300 text-sm"
+                    className={`inline-block px-4 py-2 ${
+                      loadingCourseId === course.courseId
+                        ? 'bg-indigo-500 cursor-not-allowed'
+                        : 'bg-indigo-600 hover:bg-indigo-700'
+                    } text-white rounded transition-colors duration-300 text-sm`}
                     role="button"
                     aria-label={`View details for ${course.courseName}`}
+                    onClick={() => {
+                      setLoadingCourseId(course.courseId);
+                    }}
                   >
-                    View Details
+                    {loadingCourseId === course.courseId ? (
+                      <div className="flex items-center gap-2">
+                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Loading...
+                      </div>
+                    ) : (
+                      'View Details'
+                    )}
                   </Link>
                 </div>
               </div>
