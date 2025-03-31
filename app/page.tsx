@@ -102,16 +102,16 @@ export default function Dashboard() {
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <h2 className="mt-4 text-xl font-semibold text-gray-800">Welcome to Your Dashboard</h2>
+          <h2 className="mt-4 text-xl font-semibold text-gray-800">Sign in Required</h2>
           <p className="mt-2 text-gray-600">
-            It looks like your course evaluations haven&apos;t been processed yet. Your teachers are currently reviewing your answer sheets, and your scores will be available here once the evaluation is complete. Please check back later!
+            Please sign in to view your evaluation results and academic performance tracking.
           </p>
-          <button
-            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-            onClick={() => window.location.reload()}
+          <Link
+            href="/signup"
+            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors inline-block"
           >
-            Refresh Dashboard
-          </button>
+            Sign In
+          </Link>
         </div>
       </div>
     );
