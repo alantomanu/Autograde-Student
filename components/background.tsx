@@ -13,27 +13,36 @@ export function Background({ children }: BackgroundProps) {
       <div className="fixed inset-0 w-full h-full z-0">
         <GridPattern
           squares={[
-            [4, 4],
-            [5, 1],
-            [8, 2],
-            [5, 3],
-            [5, 5],
-            [10, 10],
-            [12, 15],
-            [15, 10],
-            [10, 15],
-            [15, 10],
-            [10, 15],
-            [15, 10],
+            // Left side (reduced)
+            [5, 8],
+            [5, 14],
+            [5, 20],
+            
+            // Left-center
+            [12, 6],
+            [12, 12],
+            [12, 18],
+            [12, 24],
+            
+            // Center-right
+            [19, 8],
+            [19, 14],
+            [19, 20],
+            
+            // Right side (reduced)
+            [26, 10],
+            [26, 16],
+            [26, 22],
           ]}
           className={cn(
-            "[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
+            "[mask-image:radial-gradient(1600px_circle_at_center,white,transparent)]",
             "absolute inset-0 w-full h-full",
-            "opacity-50",
-            "stroke-gray-300"
+            "opacity-35",
+            "stroke-gray-300",
+            "transform -skew-y-12"
           )}
           style={{
-            strokeWidth: 1.5,
+            strokeWidth: 1.25,
           }}
         />
       </div>

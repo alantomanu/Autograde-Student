@@ -5,6 +5,8 @@ import { User, LogOut } from "lucide-react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
+import { DotPattern } from "./magicui/dot-pattern";
+import { cn } from "@/lib/utils";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,10 +56,25 @@ export default function App() {
   };
 
   return (
-    <div className="w-full py-3 sm:py-6 flex justify-center bg-white relative">
+    <div className="w-full py-3 sm:py-6 flex justify-center backdrop-blur-sm relative">
+      <div className="absolute inset-0 overflow-hidden">
+        <DotPattern
+          width={20}
+          height={20}
+          cx={1}
+          cy={1}
+          cr={1.5}
+          className={cn(
+            "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]",
+            "opacity-70",
+            "text-gray-400"
+          )}
+        />
+      </div>
+      
       <div className="relative z-50 w-[95%] sm:w-[80%] max-w-2xl">
         {/* Oval Navbar Container */}
-        <nav className="bg-white rounded-full px-4 sm:px-12 py-2 sm:py-3 shadow-lg flex items-center justify-between border border-gray-100 w-full relative">
+        <nav className="bg-white/90 backdrop-blur-sm rounded-full px-4 sm:px-12 py-2 sm:py-3 shadow-lg flex items-center justify-between border border-gray-100 w-full relative">
           {/* Logo Section */}
           <div className="flex items-center space-x-1">
             <Image 
@@ -123,9 +140,6 @@ export default function App() {
             )}
           </div>
         </nav>
-        
-        {/* Decorative background pill */}
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-full blur-md -z-10 opacity-75"></div>
       </div>
     </div>
   );
