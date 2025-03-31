@@ -97,18 +97,45 @@ export default function SignupPage() {
     e.preventDefault();
     
     try {
-      const result = await signIn('credentials', {
-        identifier: credentials.studentId,
-        password: credentials.password,
-        callbackUrl: '/',
-        redirect: false, // Don't redirect automatically
-      });
+      if (isOAuth) {
+        // For OAuth users, attempt to find and link account with student ID
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            studentId: credentials.studentId,
+            name: searchParams.get('name'),
+            email: searchParams.get('email'),
+            oauthId: searchParams.get('oauthId'),
+            profilePictureUrl: searchParams.get('image'),
+          }),
+        });
 
-      if (result?.error) {
-        setError('Invalid credentials');
+        const data = await res.json();
+        
+        if (res.ok) {
+          // After successful registration, sign in with Google
+          await signIn('google', {
+            callbackUrl: '/',
+            redirect: true,
+          });
+        } else {
+          setError(data.error || 'Registration failed');
+        }
       } else {
-        // Manually redirect on success
-        window.location.href = '/';
+        // Normal credential-based sign in
+        const result = await signIn('credentials', {
+          identifier: credentials.studentId,
+          password: credentials.password,
+          callbackUrl: '/',
+          redirect: false,
+        });
+
+        if (result?.error) {
+          setError('Invalid credentials');
+        } else {
+          window.location.href = '/';
+        }
       }
     } catch {
       setError('Invalid credentials');
@@ -192,12 +219,14 @@ export default function SignupPage() {
                 {isLogin ? 'Sign In' : 'Create Account'}
               </h1>
               
-              <div className="flex justify-center">
-                <GoogleButton 
-                  onClick={handleGoogleSignIn}
-                  text="Continue with Google"
-                />
-              </div>
+              {!isOAuth && (
+                <div className="flex justify-center">
+                  <GoogleButton 
+                    onClick={handleGoogleSignIn}
+                    text="Continue with Google"
+                  />
+                </div>
+              )}
 
               {error && (
                 <div className="text-red-600 text-center">
@@ -229,28 +258,30 @@ export default function SignupPage() {
                         onChange={(e) => setCredentials({ ...credentials, studentId: e.target.value })}
                       />
                     </div>
-                    <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
-                        <FaLock />
+                    {!isOAuth && (
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900">
+                          <FaLock />
+                        </div>
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          required={!isOAuth}
+                          className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                          placeholder="Password"
+                          value={credentials.password}
+                          onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                        />
                       </div>
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
-                        placeholder="Password"
-                        value={credentials.password}
-                        onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                      />
-                    </div>
+                    )}
                   </div>
 
                   <button
                     type="submit"
                     className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
                   >
-                    Sign in
+                    {isOAuth ? 'Link Account' : 'Sign in'}
                   </button>
                 </form>
               ) : (
