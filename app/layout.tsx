@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import "./globals.css";
 import AppNavbar from "@/components/navbar";
+import { Background } from "../components/background";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,10 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} font-sans`}>
       <body>
-        <AppNavbar />
-        <main>
-          {children}
-        </main>
+        <Background>
+          <AppNavbar />
+          <div className="min-h-screen bg-transparent">
+            {children}
+          </div>
+        </Background>
       </body>
     </html>
   );

@@ -121,7 +121,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="relative flex max-h-screen items-center justify-center bg-slate-50 px-4 py-12">
+    <div className="relative flex max-h-screen items-center justify-center bg-transparent px-4 py-12">
       {/* Blurred background elements */}
       <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-purple-300 opacity-40 blur-3xl"></div>
       <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-indigo-300 opacity-40 blur-3xl"></div>
