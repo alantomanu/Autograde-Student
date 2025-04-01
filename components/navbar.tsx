@@ -57,7 +57,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-full py-3 sm:py-6 flex justify-center backdrop-blur-sm relative">
+    <div className="w-full py-3 sm:py-6 flex justify-center backdrop-blur-sm relative z-[999998]">
       <div className="absolute inset-0 overflow-hidden">
         <DotPattern
           width={20}
@@ -73,7 +73,7 @@ export default function App() {
         />
       </div>
       
-      <div className="relative z-50 w-[95%] sm:w-[80%] max-w-2xl">
+      <div className="relative z-[999999] w-[95%] sm:w-[80%] max-w-2xl">
         {/* Oval Navbar Container */}
         <nav className="bg-white/90 backdrop-blur-sm rounded-full px-4 sm:px-12 py-2 sm:py-3 shadow-lg flex items-center justify-between border border-gray-100 w-full relative">
           {/* Logo Section */}
@@ -131,10 +131,10 @@ export default function App() {
                     )}
                   </button>
                   {showDropdown && (
-                    <div className="absolute right-0 sm:right-auto sm:transform sm:-translate-x-1/2 sm:left-1/2 mt-5 w-32 bg-white border border-gray-200 rounded-xl shadow-lg z-[100] overflow-hidden">
+                    <div className="absolute right-0 sm:right-auto sm:absolute sm:-translate-x-1/2 sm:left-1/2 mt-5 w-32 bg-white/100 border border-gray-200 rounded-xl shadow-xl z-[9999999] overflow-visible">
                       <button
                         onClick={handleLogout}
-                        className="flex items-center justify-center w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-200 group"
+                        className="flex items-center justify-center w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-200 group rounded-xl bg-white/100"
                       >
                         <LogOut 
                           size={18} 

@@ -39,7 +39,7 @@ export function Background({ children }: BackgroundProps) {
             "absolute inset-0 w-full h-full",
             "opacity-35",
             "stroke-gray-300",
-            "transform -skew-y-12"
+            
           )}
           style={{
             strokeWidth: 1.25,

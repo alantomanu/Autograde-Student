@@ -156,10 +156,10 @@ function SignupContent() {
       <div className="absolute top-40 right-20 h-40 w-40 rounded-full bg-violet-400 opacity-30 blur-3xl"></div>
       <div className="absolute bottom-20 left-40 h-60 w-60 rounded-full bg-fuchsia-300 opacity-30 blur-3xl"></div>
       
-      <div className="relative z-10 w-full max-w-4xl overflow-hidden rounded-2xl bg-white/60 shadow-xl backdrop-blur-lg">
+      <div className="relative z-10 w-full max-w-4xl overflow-hidden rounded-3xl bg-white/60 shadow-xl backdrop-blur-lg">
         <div className="flex flex-col md:flex-row">
           {/* Left panel - Welcome back */}
-          <div className="bg-gradient-to-br from-purple-600 to-indigo-600 p-8 text-white md:w-5/12 md:p-10">
+          <div className="bg-gradient-to-br from-purple-600 to-indigo-600 p-8 text-white md:w-5/12 md:p-10 rounded-l-3xl">
             <div className="mb-10">
               <div className="flex items-center space-x-2">
                 <div className="w-10 h-10 relative">
@@ -188,7 +188,7 @@ function SignupContent() {
               
               <button 
                 onClick={toggleForm} 
-                className="inline-block rounded-lg border-2 border-white py-2.5 px-6 font-medium hover:bg-white hover:text-purple-600 transition-colors duration-300"
+                className="inline-block rounded-xl border-2 border-white py-2.5 px-6 font-medium hover:bg-white hover:text-purple-600 transition-colors duration-300"
               >
                 {isLogin ? 'SIGN UP' : 'SIGN IN'}
               </button>
@@ -250,7 +250,7 @@ function SignupContent() {
                         name="studentId"
                         type="text"
                         required
-                        className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                        className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                         placeholder="Student ID"
                         value={credentials.studentId}
                         onChange={(e) => setCredentials({ ...credentials, studentId: e.target.value })}
@@ -266,7 +266,7 @@ function SignupContent() {
                           name="password"
                           type="password"
                           required={!isOAuth}
-                          className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                          className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                           placeholder="Password"
                           value={credentials.password}
                           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
@@ -277,7 +277,7 @@ function SignupContent() {
 
                   <button
                     type="submit"
-                    className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
+                    className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
                   >
                     {isOAuth ? 'Link Account' : 'Sign in'}
                   </button>
@@ -294,7 +294,7 @@ function SignupContent() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Full Name"
-                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required={!isLogin}
                     />
                   </div>
@@ -309,7 +309,7 @@ function SignupContent() {
                       value={formData.studentId}
                       onChange={handleChange}
                       placeholder="Student ID"
-                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required
                     />
                   </div>
@@ -324,7 +324,7 @@ function SignupContent() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Email"
-                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required={!isLogin}
                     />
                   </div>
@@ -339,7 +339,7 @@ function SignupContent() {
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="Password"
-                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required
                     />
                   </div>
@@ -354,14 +354,14 @@ function SignupContent() {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="Confirm Password"
-                      className="relative block w-full rounded-lg border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
+                      className="relative block w-full rounded-xl border border-gray-300 bg-white/70 py-3 pl-10 pr-4 text-black focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
                       required={!isLogin}
                     />
                   </div>
                   
                   <button
                     type="submit"
-                    className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
+                    className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-medium text-white shadow-md hover:shadow-lg transition-shadow"
                   >
                     SIGN UP
                   </button>
