@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from "next-auth/react";
 import GoogleButton from "@/components/GoogleButton";
@@ -7,7 +7,7 @@ import { FaUser, FaLock, FaIdCard } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import Image from 'next/image';
 
-export default function SignupPage() {
+function SignupContent() {
   const searchParams = useSearchParams();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -388,5 +388,19 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="relative flex max-h-screen items-center justify-center bg-transparent px-4 py-12">
+        <div className="text-center">
+          Loading...
+        </div>
+      </div>
+    }>
+      <SignupContent />
+    </Suspense>
   );
 }

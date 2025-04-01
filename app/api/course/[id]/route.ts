@@ -2,9 +2,8 @@ import { db } from "@/drizzle/db";
 import { scores, courses, students } from "@/drizzle/schema";
 import { eq, and } from "drizzle-orm";
 import { getServerSession } from "next-auth/next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// Add interface for raw feedback item
 interface RawFeedbackItem {
     mark: string | number;
     maxMark: string | number;
@@ -12,7 +11,6 @@ interface RawFeedbackItem {
     questionNumber?: string;
 }
 
-// Add interface for processed feedback item
 interface FeedbackItem {
     mark: number;
     maxMark: number;
@@ -21,19 +19,26 @@ interface FeedbackItem {
 }
 
 export async function GET(
-    request: Request,
-    context: { params: { id: string } }
-) {
+    _request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
     try {
-        const { id } = await context.params;  // Await the entire params object
-        const courseId = id;
+        const { id } = await params;
         
+        if (!id) {
+            return NextResponse.json({ error: "Course ID is required" }, { status: 400 });
+        }
+
+        const courseId = parseInt(id);
+        if (isNaN(courseId)) {
+            return NextResponse.json({ error: "Invalid Course ID" }, { status: 400 });
+        }
+
         const session = await getServerSession();
         if (!session?.user?.email) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        // First get the student
         const student = await db.query.students.findFirst({
             where: eq(students.email, session.user.email),
         });
@@ -42,7 +47,6 @@ export async function GET(
             return NextResponse.json({ error: "Student not found" }, { status: 404 });
         }
 
-        // Use the awaited courseId
         const score = await db
             .select({
                 id: scores.id,
@@ -59,7 +63,7 @@ export async function GET(
             .leftJoin(courses, eq(scores.courseId, courses.id))
             .where(
                 and(
-                    eq(scores.courseId, parseInt(courseId)),
+                    eq(scores.courseId, courseId),
                     eq(scores.studentId, student.studentId)
                 )
             )
@@ -69,45 +73,42 @@ export async function GET(
             return NextResponse.json({ error: "Course not found" }, { status: 404 });
         }
 
-        // Get all scores for this course to calculate rank and class average
         const allScores = await db
             .select({
                 percentage: scores.percentage,
             })
             .from(scores)
-            .where(eq(scores.courseId, parseInt(courseId)));
+            .where(eq(scores.courseId, courseId));
 
-        const classAverage = allScores.reduce((acc, curr) => acc + curr.percentage, 0) / allScores.length;
-        const betterScores = allScores.filter(s => s.percentage > score[0].percentage);
+        const classAverage =
+            allScores.length > 0
+                ? allScores.reduce((acc, curr) => acc + curr.percentage, 0) / allScores.length
+                : 0;
+        
+        const betterScores = allScores.filter((s) => s.percentage > score[0].percentage);
         const rank = betterScores.length + 1;
 
-        // Initialize parsedFeedback with proper type
         let parsedFeedback: FeedbackItem[] = [];
-        
+
         if (score[0].feedback) {
             try {
-                let rawFeedback: RawFeedbackItem[];
-                
-                if (typeof score[0].feedback === 'string') {
-                    rawFeedback = JSON.parse(score[0].feedback);
-                } else {
-                    rawFeedback = score[0].feedback as RawFeedbackItem[];
-                }
-                
-                // Ensure each feedback item has the required properties
-                parsedFeedback = rawFeedback.map(item => ({
+                const rawFeedback: RawFeedbackItem[] =
+                    typeof score[0].feedback === "string"
+                        ? JSON.parse(score[0].feedback)
+                        : score[0].feedback;
+
+                parsedFeedback = rawFeedback.map((item) => ({
                     mark: Number(item.mark) || 0,
                     maxMark: Number(item.maxMark) || 0,
-                    reason: item.reason || '',
-                    questionNumber: item.questionNumber || '',
+                    reason: item.reason || "",
+                    questionNumber: item.questionNumber || "",
                 }));
             } catch (error) {
-                console.error('Error parsing feedback:', error);
+                console.error("Error parsing feedback:", error);
                 parsedFeedback = [];
             }
         }
 
-        // Return the processed data
         return NextResponse.json({
             ...score[0],
             feedback: parsedFeedback,
@@ -115,7 +116,7 @@ export async function GET(
             classAverage: Math.round(classAverage * 100) / 100,
         });
     } catch (error) {
-        console.error('Error in course detail route:', error);
+        console.error("Error in course detail route:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
-} 
+}

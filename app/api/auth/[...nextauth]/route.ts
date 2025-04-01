@@ -24,7 +24,8 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
+// Define authOptions
+const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -89,7 +90,6 @@ export const authOptions: NextAuthOptions = {
           return `/signup?oauth=google&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name || '')}&image=${encodeURIComponent(user.image || '')}&oauthId=${user.id}`;
         }
 
-        // Update oauthId if not set
         if (!existingStudent.oauthId) {
           await db.update(students)
             .set({ oauthId: user.id })
@@ -121,15 +121,12 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Always allow callback URLs
       if (url.startsWith('/api/auth/callback/')) {
         return url;
       }
-      // Allows relative callback URLs
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
-      // Allows callback URLs on the same origin
       if (new URL(url).origin === baseUrl) {
         return url;
       }
@@ -143,8 +140,9 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
 };
 
+// Create and export the handler directly
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST }; 
+export { handler as GET, handler as POST };
