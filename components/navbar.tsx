@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import { DotPattern } from "./magicui/dot-pattern";
 import { cn } from "@/lib/utils";
+import logoImage from '@/src/assets/logo.png';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,17 +80,12 @@ export default function App() {
           <div className="flex items-center space-x-1">
             <div className="w-10 h-10 relative">
               <Image 
-                src="/logo.png"
+                src={logoImage}
                 alt="Logo"
                 fill
                 sizes="(max-width: 40px) 100vw, 40px"
                 className="cursor-pointer filter grayscale object-contain"
                 priority
-                onError={(e) => {
-                  console.error('Error loading image:', e);
-                  // Fallback to SVG if image fails to load
-                  e.currentTarget.style.display = 'none';
-                }}
               />
               {/* Fallback SVG in case image fails */}
               <svg
