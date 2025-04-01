@@ -163,7 +163,7 @@ export default function CourseDetailPage() {
           </div>
           <div className="border rounded-lg overflow-hidden" style={{ height: '650px', maxWidth: '100%' }}>
             {courseDetails.answerSheetUrl && (
-              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
                 <div className="w-full h-full">
                   <PDFViewer 
                     fileUrl={courseDetails.answerSheetUrl}

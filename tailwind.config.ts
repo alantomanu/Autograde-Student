@@ -1,6 +1,9 @@
 import type { Config } from 'tailwindcss';
 import { heroui } from '@heroui/theme';
 import tailwindAnimate from 'tailwindcss-animate';
+import tailwindForms from '@tailwindcss/forms';
+import tailwindTypography from '@tailwindcss/typography';
+import tailwindAspectRatio from '@tailwindcss/aspect-ratio';
 
 const config: Config = {
   content: [
@@ -60,7 +63,13 @@ const config: Config = {
       },
     },
   },
-  plugins: [heroui(), tailwindAnimate],
+  plugins: [
+    heroui(),
+    tailwindAnimate,
+    tailwindForms,
+    tailwindTypography,
+    tailwindAspectRatio,
+  ],
 };
 
 export default config;
