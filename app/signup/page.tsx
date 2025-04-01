@@ -162,19 +162,17 @@ function SignupContent() {
             <div className="mb-10">
               <div className="flex items-center space-x-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/20">
-                  
-                <Image 
-                  src="/logo.png"
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  style={{ width: 'auto', height: 'auto' }}
-                  className="cursor-pointer filter invert brightness-10"
-                  priority={true}
-                  loading="eager"
-                  unoptimized={true}
-                />
-                <span className="text-xl font-bold"> 
+                  {/* Solution 1: Using regular img tag */}
+                  <Image 
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`}
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="cursor-pointer filter invert brightness-10"
+                    priority={true}
+                    unoptimized
+                  />
+                  <span className="text-xl font-bold">
                    
             </span>
                 </div>

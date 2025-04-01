@@ -78,14 +78,13 @@ export default function App() {
           {/* Logo Section */}
           <div className="flex items-center space-x-1">
             <Image 
-              src="/logo.png"
+               src={`${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`}
               alt="Logo"
               width={40}
               height={40}
               className="cursor-pointer filter grayscale"
               priority={true}
-              loading="eager"
-              unoptimized={true}
+              unoptimized
             />
             <span className="font-bold text-gray-700 text-base sm:text-lg">Autograde</span>
           </div>
