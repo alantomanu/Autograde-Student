@@ -77,15 +77,36 @@ export default function App() {
         <nav className="bg-white/90 backdrop-blur-sm rounded-full px-4 sm:px-12 py-2 sm:py-3 shadow-lg flex items-center justify-between border border-gray-100 w-full relative">
           {/* Logo Section */}
           <div className="flex items-center space-x-1">
-            <Image 
-               src={`${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`}
-              alt="Logo"
-              width={40}
-              height={40}
-              className="cursor-pointer filter grayscale"
-              priority={true}
-              unoptimized
-            />
+            <div className="w-10 h-10 relative">
+              <Image 
+                src="/logo.png"
+                alt="Logo"
+                fill
+                sizes="(max-width: 40px) 100vw, 40px"
+                className="cursor-pointer filter grayscale object-contain"
+                priority
+                onError={(e) => {
+                  console.error('Error loading image:', e);
+                  // Fallback to SVG if image fails to load
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              {/* Fallback SVG in case image fails */}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                className="w-full h-full cursor-pointer hidden"
+                id="fallbackSvg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+            </div>
             <span className="font-bold text-gray-700 text-base sm:text-lg">Autograde</span>
           </div>
           
