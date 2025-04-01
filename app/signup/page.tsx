@@ -170,7 +170,9 @@ function SignupContent() {
                   height={40}
                   style={{ width: 'auto', height: 'auto' }}
                   className="cursor-pointer filter invert brightness-10"
-                  priority
+                  priority={true}
+                  loading="eager"
+                  unoptimized={true}
                 />
                 <span className="text-xl font-bold"> 
                    

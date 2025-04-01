@@ -83,7 +83,9 @@ export default function App() {
               width={40}
               height={40}
               className="cursor-pointer filter grayscale"
-              priority
+              priority={true}
+              loading="eager"
+              unoptimized={true}
             />
             <span className="font-bold text-gray-700 text-base sm:text-lg">Autograde</span>
           </div>
