@@ -59,9 +59,31 @@ interface StudentData {
 // Initialize font
 const outfit = Outfit({ subsets: ['latin'] });
 
+// Add auth hook
+const useAuth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check');
+        const data = await response.json();
+        setIsAuthenticated(data.authenticated);
+      } catch  {
+        setIsAuthenticated(false);
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
+  return isAuthenticated;
+};
+
 export default function Dashboard() {
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [loading, setLoading] = useState(true);
+  const isAuthenticated = useAuth();
   const [loadingCourseId, setLoadingCourseId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -88,75 +110,70 @@ export default function Dashboard() {
 
 
   if (loading) {
-    // For logged-in users (when studentData exists and has valid properties)
-    try {
-      const { student, courses, overallPerformance } = studentData || {};
-      if (student && courses && overallPerformance) {
-        return (
-          <div className="min-h-screen bg-transparent">
-            <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-              {/* Skeleton for Student Overview */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
-                <div className="flex flex-col md:flex-row justify-between items-center">
-                  <div className="mb-4 md:mb-0">
-                    <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
-                    <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
-                  </div>
-                  <div className="flex flex-col items-center md:items-end">
-                    <div className="h-10 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
-                    <div className="h-4 w-40 bg-gray-200 rounded animate-pulse"></div>
-                  </div>
+    // For logged-in users
+    if (isAuthenticated) {
+      return (
+        <div className="min-h-screen bg-transparent">
+          <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            {/* Skeleton for Student Overview */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
+              <div className="flex flex-col md:flex-row justify-between items-center">
+                <div className="mb-4 md:mb-0">
+                  <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+                <div className="flex flex-col items-center md:items-end">
+                  <div className="h-10 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 w-40 bg-gray-200 rounded animate-pulse"></div>
                 </div>
               </div>
+            </div>
 
-              {/* Skeleton for Performance Overview */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                <div className="lg:col-span-2">
-                  <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
-                    <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
-                    <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
-                    <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
-                    <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
-                  </div>
+            {/* Skeleton for Performance Overview */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+              <div className="lg:col-span-2">
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                  <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                  <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
                 </div>
               </div>
+              <div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                  <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                  <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
 
-              {/* Skeleton for Course Cards */}
-              <div className="h-8 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {[1, 2, 3].map((index) => (
-                  <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
-                    <div className="h-2 bg-gray-200"></div>
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
-                          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
-                        </div>
-                        <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
-                      </div>
-                      <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
-                      <div className="flex justify-between items-center">
+            {/* Skeleton for Course Cards */}
+            <div className="h-8 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {[1, 2, 3].map((index) => (
+                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
+                  <div className="h-2 bg-gray-200"></div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
                         <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
-                        <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
                       </div>
+                      <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="flex justify-between items-center">
+                      <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </main>
-          </div>
-        );
-      }
-    } catch {
-      // If destructuring fails, show login skeleton
+                </div>
+              ))}
+            </div>
+          </main>
+        </div>
+      );
     }
 
-    // For non-logged in users or invalid studentData
+    // For non-logged in users
     return (
       <div className="min-h-[calc(100vh-64px)] bg-transparent">
         <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">

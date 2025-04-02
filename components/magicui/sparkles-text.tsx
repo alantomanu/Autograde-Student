@@ -19,7 +19,7 @@ const Sparkle: React.FC<Sparkle> = ({ id, x, y, color, delay, scale }) => {
   return (
     <motion.svg
       key={id}
-      className="pointer-events-none absolute z-20"
+      className="pointer-events-none absolute z-20 w-3 h-3 md:w-[21px] md:h-[21px]"
       initial={{ opacity: 0, left: x, top: y }}
       animate={{
         opacity: [0, 1, 0],
@@ -99,7 +99,7 @@ export const SparklesText: React.FC<SparklesTextProps> = ({
       const starY = `${Math.random() * 100}%`;
       const color = Math.random() > 0.5 ? colors.first : colors.second;
       const delay = Math.random() * 2;
-      const scale = Math.random() * 1 + 0.3;
+      const scale = Math.random() * 0.5 + 0.3;
       const lifespan = Math.random() * 10 + 5;
       const id = `${starX}-${starY}-${Date.now()}`;
       return { id, x: starX, y: starY, color, delay, scale, lifespan };

@@ -161,10 +161,10 @@ export default function CourseDetailPage() {
               Open Full Screen
             </button>
           </div>
-          <div className="border rounded-lg overflow-hidden" style={{ height: '650px', maxWidth: '100%' }}>
+          <div className="border rounded-lg overflow-hidden h-[420px] md:h-[min(100vh-100px,1200px)]">
             {courseDetails.answerSheetUrl && (
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-                <div className="w-full h-full">
+                <div className="w-full h-[400px] md:h-full">
                   <PDFViewer 
                     fileUrl={courseDetails.answerSheetUrl}
                   />
