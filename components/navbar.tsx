@@ -103,7 +103,7 @@ export default function App() {
                 />
               </svg>
             </div>
-            <span className="font-bold text-gray-700 text-base sm:text-lg">Autograde</span>
+            <span className="font-bold text-gray-700 text-base sm:text-lg">AutoGrade</span>
           </div>
           
           {/* Authentication Section */}

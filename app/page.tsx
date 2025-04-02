@@ -253,7 +253,7 @@ export default function Dashboard() {
                 </TypingAnimation>
               </div>
               <p className="text-sm md:text-base text-gray-600 mt-2">
-                Experience the future of academic assessment powered by Meta-LLaMA 3. Get detailed insights into your performance with our AI-driven evaluation system.
+                Experience the future of academic assessment powered by Meta-LLaMA. Get detailed insights into your performance with our AI-driven evaluation system.
               </p>
             </div>
 
