@@ -17,6 +17,16 @@ import {
   Pie,
   Cell,
 } from 'recharts';
+import { 
+  BarChart3, 
+  Target, 
+  LineChart, 
+  FileText,
+  CheckCircle 
+} from 'lucide-react';
+import { Outfit } from 'next/font/google';
+import { SparklesText } from "@/components/magicui/sparkles-text";
+import { TypingAnimation } from "@/components/magicui/typing-animation";
 
 interface StudentData {
   student: {
@@ -45,6 +55,9 @@ interface StudentData {
     totalStudents: number;
   };
 }
+
+// Initialize font
+const outfit = Outfit({ subsets: ['latin'] });
 
 export default function Dashboard() {
   const [studentData, setStudentData] = useState<StudentData | null>(null);
@@ -75,61 +88,124 @@ export default function Dashboard() {
 
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-transparent">
-        <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          {/* Skeleton for Student Overview */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0">
-                <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
-                <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
-              </div>
-              <div className="flex flex-col items-center md:items-end">
-                <div className="h-10 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
-                <div className="h-4 w-40 bg-gray-200 rounded animate-pulse"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Skeleton for Performance Overview */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div className="lg:col-span-2">
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
-                <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
-                <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
-                <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
-                <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Skeleton for Course Cards */}
-          <div className="h-8 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {[1, 2, 3].map((index) => (
-              <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
-                <div className="h-2 bg-gray-200"></div>
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
-                      <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
-                    </div>
-                    <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+    // For logged-in users (when studentData exists and has valid properties)
+    try {
+      const { student, courses, overallPerformance } = studentData || {};
+      if (student && courses && overallPerformance) {
+        return (
+          <div className="min-h-screen bg-transparent">
+            <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+              {/* Skeleton for Student Overview */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                  <div className="mb-4 md:mb-0">
+                    <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
+                    <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
                   </div>
-                  <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
-                  <div className="flex justify-between items-center">
-                    <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
-                    <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="flex flex-col items-center md:items-end">
+                    <div className="h-10 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                    <div className="h-4 w-40 bg-gray-200 rounded animate-pulse"></div>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* Skeleton for Performance Overview */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <div className="lg:col-span-2">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                    <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                    <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Skeleton for Course Cards */}
+              <div className="h-8 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {[1, 2, 3].map((index) => (
+                  <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
+                    <div className="h-2 bg-gray-200"></div>
+                    <div className="p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                        </div>
+                        <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                      <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
+                      <div className="flex justify-between items-center">
+                        <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                        <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </main>
+          </div>
+        );
+      }
+    } catch {
+      // If destructuring fails, show login skeleton
+    }
+
+    // For non-logged in users or invalid studentData
+    return (
+      <div className="min-h-[calc(100vh-64px)] bg-transparent">
+        <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            {/* Left side skeleton */}
+            <div className="space-y-4">
+              {/* Title and subtitle skeleton */}
+              <div className="space-y-3">
+                <div className="h-10 w-48 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-64 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-16 w-full bg-gray-200 rounded animate-pulse"></div>
+              </div>
+
+              {/* Features skeleton */}
+              <div className="space-y-4 mt-8">
+                <div className="h-8 w-40 bg-gray-200 rounded animate-pulse"></div>
+                <div className="grid gap-4">
+                  {[1, 2, 3, 4].map((index) => (
+                    <div 
+                      key={index}
+                      className="flex items-start space-x-4 p-4 rounded-xl bg-white/60 backdrop-blur-sm"
+                    >
+                      <div className="h-10 w-10 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-5 w-32 bg-gray-200 rounded animate-pulse"></div>
+                        <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right side skeleton */}
+            <div className="flex items-center justify-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 w-full max-w-md space-y-6">
+                <div className="flex justify-center">
+                  <div className="h-16 w-16 bg-gray-200 rounded-full animate-pulse"></div>
+                </div>
+                <div className="space-y-4">
+                  <div className="h-8 w-48 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 w-56 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                </div>
+                <div className="space-y-4">
+                  <div className="h-12 w-full bg-gray-200 rounded-xl animate-pulse"></div>
+                  <div className="h-4 w-40 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
@@ -138,31 +214,102 @@ export default function Dashboard() {
 
   if (!studentData || !studentData.courses || !studentData.student || !studentData.overallPerformance) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center p-8 bg-white rounded-lg shadow-lg max-w-md">
-          <svg 
-            className="mx-auto h-12 w-12 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <h2 className="mt-4 text-xl font-semibold text-gray-800">Sign in Required</h2>
-          <p className="mt-2 text-gray-600">
-            Please sign in to view your evaluation results and academic performance tracking.
-          </p>
-          <Link
-            href="/signup"
-            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors inline-block"
-          >
-            Sign In
-          </Link>
+      <div className={`flex items-center justify-center min-h-[calc(100vh-64px)] px-4 ${outfit.className}`}>
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 p-5 md:p-4 max-w-6xl w-full">
+          {/* Left side - Welcome content */}
+          <div className="space-y-3 md:space-y-4">
+            <div className="space-y-2">
+              <div className="text-2xl md:text-4xl font-bold">
+                <SparklesText 
+                  text="AutoGrade"
+                  colors={{ first: "#4F46E5", second: "#7C3AED" }}
+                  className="text-gray-800 text-3xl md:text-5xl"
+                />
+              </div>
+              <div className="block">
+                <TypingAnimation
+                  className="text-lg md:text-2xl font-medium text-gray-800"
+                  duration={50}
+                  delay={800}
+                >
+                  Revolutionizing Answer Evaluation with AI
+                </TypingAnimation>
+              </div>
+              <p className="text-sm md:text-base text-gray-600 mt-2">
+                Experience the future of academic assessment powered by Meta-LLaMA 3. Get detailed insights into your performance with our AI-driven evaluation system.
+              </p>
+            </div>
+
+            <div className="space-y-3 md:space-y-4 mt-3 md:mt-4">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-800">What you&apos;ll get:</h2>
+              <div className="grid gap-3 md:gap-4">
+                {[
+                  {
+                    icon: BarChart3,
+                    title: "Comprehensive Analytics",
+                    description: "Access detailed performance metrics and subject-wise analysis"
+                  },
+                  {
+                    icon: Target,
+                    title: "Question-wise Breakdown",
+                    description: "Gain insight into where and why you lost marks to improve your performance effectively."
+                  },
+                  {
+                    icon: LineChart,
+                    title: "Performance Tracking",
+                    description: "Track progress with interactive charts and rankings"
+                  },
+                  {
+                    icon: FileText,
+                    title: "Answer Sheet Access",
+                    description: "Review AI-annotated answer sheets instantly"
+                  }
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start space-x-4 p-4 rounded-xl bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-all duration-300 group"
+                  >
+                    <span className="p-2 rounded-lg bg-indigo-100 group-hover:bg-indigo-200 transition-colors">
+                      <feature.icon className="w-6 h-6 text-indigo-600" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{feature.title}</h3>
+                      <p className="text-sm text-gray-600">{feature.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right side - Sign in card */}
+          <div className="flex items-center justify-center">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100">
+              <div className="text-center space-y-4">
+                <div className="inline-block p-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
+                  <CheckCircle className="w-12 h-12 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+                  Sign in to Continue
+                </h2>
+                <p className="text-gray-600">
+                  Access your AI-evaluated answer sheets and analytics
+                </p>
+              </div>
+
+              <div className="mt-8 space-y-4">
+                <Link
+                  href="/signup"
+                  className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 shadow-md"
+                >
+                  Sign In to Get Started
+                </Link>
+                <div className="text-sm text-gray-500 text-center">
+                  Powered by advanced AI for accurate evaluation
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -197,7 +344,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-transparent">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
         {/* Student Overview */}
         <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-center">

@@ -50,7 +50,7 @@ export default function App() {
   const handleLogout = async () => {
     await signOut({ 
       redirect: true,
-      callbackUrl: '/signup'
+      callbackUrl: '/'
     });
     setIsLoggedIn(false);
     setShowDropdown(false);
