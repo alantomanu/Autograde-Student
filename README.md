@@ -1,24 +1,62 @@
-# 📚 Autograde Student Dashboard  
+<div align="center">
 
+<h1 align="center">📚 Autograde Student Dashboard  </h1>
 
-**Your intelligent academic performance tracker** – Visualize results, identify weaknesses, and optimize learning strategies with AI-powered insights.  
+ 
+
+<br>
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-000?style=for-the-badge&logo=vercel&logoColor=white)](https://autograde-student.vercel.app/)
+&nbsp;&nbsp;
 [![License](https://img.shields.io/badge/📜_MIT_License-000?style=for-the-badge)](LICENSE)
+&nbsp;&nbsp;
 [![Next.js](https://img.shields.io/badge/⚡_Powered_by_Next.js-000?style=for-the-badge&logo=next.js)](https://nextjs.org/)  
 
----
+</div>
 
-## ✨ Why Autograde Student?  
-
-Transform raw grades into actionable intelligence with our cutting-edge dashboard:  
-
-✅ **Precision Analytics** - Pinpoint exactly which concepts need improvement  
-✅ **Visual Learning Maps** - Interactive graphs show your academic journey  
-✅ **AI-Powered Suggestions** - Get personalized study recommendations  
-✅ **Real-Time Tracking** - Monitor progress across all subjects  
 
 ---
+
+
+
+<p align="center">
+<strong>AI-Driven Answer Evaluation</strong><br>
+Experience next-gen academic assessment powered by <strong>Meta-LLaMA</strong>.<br>
+Gain <strong>deep performance insights</strong> with our intelligent evaluation system.
+</p>
+
+
+
+<div align="center">
+
+**🌟 Features That Transform Your Learning**  
+
+<table>
+  <tr>
+    <td>📊</td>
+    <td><strong>In-Depth Performance Analytics</strong><br>Get detailed subject-wise analysis and personalized insights</td>
+  </tr>
+  <tr>
+    <td>🔍</td>
+    <td><strong>Smart Question Breakdown</strong><br>Identify exactly <strong>where</strong> and <strong>why</strong> marks were lost</td>
+  </tr>
+  <tr>
+    <td>📈</td>
+    <td><strong>Interactive Progress Tracking</strong><br>Monitor improvement with AI-generated charts and rankings</td>
+  </tr>
+  <tr>
+    <td>📜</td>
+    <td><strong>Instant AI-Reviewed Answer Sheets</strong><br>Access your responses with automated feedback and annotations</td>
+  </tr>
+</table>
+
+</div>
+
+---
+
+
+
+
 
 ## 🖥️ Live Preview  
 
@@ -31,13 +69,18 @@ Experience the future of academic analytics:
 
 ## 🛠️ Tech Stack  
 
-| Category       | Technology                          | Purpose                          |
-|----------------|-------------------------------------|----------------------------------|
-| Framework      | ![Next.js](https://img.icons8.com/?size=20&id=MWiBjkuHeMVq&format=png) Next.js 14 | Blazing fast React framework |
-| Styling        | ![Tailwind](https://img.icons8.com/?size=20&id=4PiNHtUJVbLs&format=png) Tailwind CSS | Utility-first CSS framework |
-| Database       | ![PostgreSQL](https://img.icons8.com/?size=20&id=38561&format=png) PostgreSQL | Relational database |
-| ORM            | ![Drizzle](https://img.icons8.com/?size=20&id=13014&format=png) Drizzle ORM | Type-safe database queries |
-| Analytics      | ![Chart.js](https://img.icons8.com/?size=20&id=108650&format=png) Chart.js | Interactive data visualization |
+<div align="center">
+
+| Category       | Technology | Purpose |
+|---------------|------------|---------|
+| **Framework**  | ![Next.js](https://img.icons8.com/?size=20&id=MWiBjkuHeMVq&format=png) **Next.js 14** | Blazing fast React framework |
+| **Styling**    | ![Tailwind](https://img.icons8.com/?size=20&id=4PiNHtUJVbLs&format=png) **Tailwind CSS** | Utility-first CSS framework |
+| **Database**   | ![PostgreSQL](https://img.icons8.com/?size=20&id=38561&format=png) **PostgreSQL** | Relational database |
+| **ORM**        | ![Drizzle](https://img.icons8.com/?size=20&id=13014&format=png) **Drizzle ORM** | Type-safe database queries |
+| **Analytics**  | ![Chart.js](https://img.icons8.com/?size=20&id=108650&format=png) **Chart.js** | Interactive data visualization |
+
+</div>
+
 
 ---
 
