@@ -24,7 +24,7 @@ Transform raw grades into actionable intelligence with our cutting-edge dashboar
 
 Experience the future of academic analytics:  
 
-[![Dashboard Preview](https://fakeurl.com/demo-preview.gif)](https://autograde-student.vercel.app/)  
+[![Dashboard Preview](https://github.com/user-attachments/assets/15b5d822-5dcd-4e5e-854a-993c6d1b896e)](https://autograde-student.vercel.app/)  
 *Click the image to explore the live demo*  
 
 ---
