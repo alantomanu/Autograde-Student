@@ -116,7 +116,7 @@ export default function Dashboard() {
         <div className="min-h-screen bg-transparent">
           <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
             {/* Skeleton for Student Overview */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
               <div className="flex flex-col md:flex-row justify-between items-center">
                 <div className="mb-4 md:mb-0">
                   <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
@@ -132,13 +132,13 @@ export default function Dashboard() {
             {/* Skeleton for Performance Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
               <div className="lg:col-span-2">
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 h-full">
                   <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
                   <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
                 </div>
               </div>
               <div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 h-full">
                   <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
                   <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
                 </div>
@@ -149,7 +149,7 @@ export default function Dashboard() {
             <div className="h-8 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {[1, 2, 3].map((index) => (
-                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
+                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md overflow-hidden">
                   <div className="h-2 bg-gray-200"></div>
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
@@ -363,7 +363,7 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
         {/* Student Overview */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <h2 className="text-2xl font-bold text-gray-800">Welcome, {student.name}</h2>
@@ -384,7 +384,7 @@ export default function Dashboard() {
         {/* Performance Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           <div className="lg:col-span-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 h-full">
               <h3 className="text-xl font-bold text-gray-800 mb-4">Subject Performance</h3>
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
@@ -402,7 +402,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-6 h-full">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 h-full">
               <h3 className="text-xl font-bold text-gray-800 mb-4">Rank Distribution</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -448,8 +448,8 @@ export default function Dashboard() {
         <h3 className="text-2xl font-bold text-gray-800 mb-4">Your Courses</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {courses.map((course) => (
-            <div key={course.id} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <div className={`h-2 ${course.percentage >= 90 ? 'bg-green-500' : course.percentage >= 75 ? 'bg-blue-500' : course.percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
+            <div key={course.id} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className={`h-2 ${course.percentage >= 90 ? 'bg-green-500' : course.percentage >= 75 ? 'bg-blue-500' : course.percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'} rounded-t-2xl`}></div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>

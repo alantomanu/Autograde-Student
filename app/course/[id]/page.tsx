@@ -59,7 +59,7 @@ export default function CourseDetailPage() {
       <div className="min-h-screen bg-transparent py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Course Header Skeleton */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="h-8 w-64 bg-gray-200 rounded animate-pulse mb-3"></div>
@@ -75,22 +75,22 @@ export default function CourseDetailPage() {
           </div>
 
           {/* Answer Sheet Section Skeleton */}
-          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
             <div className="flex justify-between items-center mb-4">
               <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
               <div className="h-6 w-28 bg-gray-200 rounded animate-pulse"></div>
             </div>
-            <div className="border rounded-lg overflow-hidden" style={{ height: '650px' }}>
+            <div className="border rounded-2xl overflow-hidden" style={{ height: '650px' }}>
               <div className="w-full h-full bg-gray-200 animate-pulse"></div>
             </div>
           </div>
 
           {/* Question-wise Analysis Skeleton */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6">
             <div className="h-7 w-48 bg-gray-200 rounded animate-pulse mb-6"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[1, 2, 3, 4, 5, 6].map((index) => (
-                <div key={index} className="border rounded-lg p-4">
+                <div key={index} className="border rounded-2xl p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
                     <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
@@ -100,7 +100,7 @@ export default function CourseDetailPage() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mb-3"></div>
                   <div className="mt-4">
-                    <div className="w-full p-4 bg-white rounded-xl border">
+                    <div className="w-full p-4 bg-white rounded-2xl border">
                       <div className="flex flex-col items-center">
                         <div className="h-5 w-24 bg-gray-200 rounded animate-pulse mb-2"></div>
                         <div className="h-20 w-full bg-gray-200 rounded animate-pulse"></div>
@@ -119,7 +119,7 @@ export default function CourseDetailPage() {
   if (!courseDetails) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center p-6 bg-white rounded-lg shadow-lg">
+        <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold text-red-500">Error</h2>
           <p className="mt-2 text-gray-600">Course details not found</p>
         </div>
@@ -131,7 +131,7 @@ export default function CourseDetailPage() {
     <div className="min-h-screen bg-transparent py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Course Header */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{courseDetails.courseName}</h1>
@@ -148,7 +148,7 @@ export default function CourseDetailPage() {
         </div>
 
         {/* Answer Sheet Section - Increased Height */}
-        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-800">Answer Sheet</h2>
             <button 
@@ -161,7 +161,7 @@ export default function CourseDetailPage() {
               Open Full Screen
             </button>
           </div>
-          <div className="border rounded-lg overflow-hidden h-[420px] md:h-[min(100vh-100px,1200px)]">
+          <div className="border rounded-2xl overflow-hidden h-[420px] md:h-[min(100vh-100px,1200px)]">
             {courseDetails.answerSheetUrl && (
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
                 <div className="w-full h-[400px] md:h-full">
@@ -175,7 +175,7 @@ export default function CourseDetailPage() {
         </div>
 
         {/* Question-wise Analysis Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">Question-wise Analysis</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {courseDetails.feedback.map((item) => {
@@ -185,7 +185,7 @@ export default function CourseDetailPage() {
               return (
                 <div 
                   key={item.questionNumber}
-                  className={`border rounded-lg p-4 transition-all duration-300 ${
+                  className={`border rounded-2xl p-4 transition-all duration-300 ${
                     marksLost === 0 
                       ? 'border-green-200 bg-green-50 hover:shadow-lg hover:shadow-green-100' 
                       : 'border-amber-200 bg-amber-50 hover:shadow-lg hover:shadow-amber-100'
@@ -249,7 +249,7 @@ export default function CourseDetailPage() {
                   {/* Feedback reason */}
                   {item.reason ? (
                     <div className="mt-4 flex justify-center">
-                      <div className="w-full p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
+                      <div className="w-full p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
                         <div className="flex flex-col items-center text-center">
                           <span className="inline-block mb-2 px-3 py-1 bg-gray-50 rounded-full text-sm font-medium text-gray-700">
                             Feedback
@@ -262,7 +262,7 @@ export default function CourseDetailPage() {
                     </div>
                   ) : marksLost === 0 && (
                     <div className="mt-4 flex justify-center items-center min-h-[120px]">
-                      <div className="mt-23 w-full p-4 bg-white rounded-xl border border-green-100 shadow-sm hover:shadow-md transition-shadow duration-200 ">
+                      <div className="mt-23 w-full p-4 bg-white rounded-2xl border border-green-100 shadow-sm hover:shadow-md transition-shadow duration-200 ">
                         <div className="flex flex-col items-center justify-center text-center gap-2">
                           <span className="inline-block px-4 py-1.5 bg-green-50 rounded-full text-sm font-medium text-green-700">
                             Excellent!
