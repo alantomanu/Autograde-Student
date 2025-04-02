@@ -267,7 +267,7 @@ export default function Dashboard() {
                 ].map((feature, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-4 p-4 rounded-xl bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-all duration-300 group"
+                    className="flex items-start space-x-4 p-4 rounded-xlbackdrop-blur-sm transition-all duration-300 group"
                   >
                     <span className="p-2 rounded-lg bg-indigo-100 group-hover:bg-indigo-200 transition-colors">
                       <feature.icon className="w-6 h-6 text-indigo-600" />
