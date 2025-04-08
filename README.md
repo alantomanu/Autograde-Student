@@ -4,6 +4,7 @@
 
  
 
+
 <br>
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-000?style=for-the-badge&logo=vercel&logoColor=white)](https://autograde-student.vercel.app/)
@@ -13,9 +14,21 @@
 [![Next.js](https://img.shields.io/badge/⚡_Powered_by_Next.js-000?style=for-the-badge&logo=next.js)](https://nextjs.org/)  
 
 </div>
+<p align="center">
+  <a href="https://autograde-student.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_Live_Site-AutoGrade-blueviolet?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Site Badge"/>
+  </a>
+</p>
 
+<p align="center">
+  🔗 Visit the full application here: <br>
+  <a href="https://autograde-student.vercel.app/" target="_blank"><strong>https://autograde-student.vercel.app/</strong></a>
+</p>
 
 ---
+
+
+
 
 
 
@@ -57,13 +70,38 @@ Gain <strong>deep performance insights</strong> with our intelligent evaluation 
 
 
 
+<div align="center">
+   
+## 📸 Project Screenshots
 
-## 🖥️ Live Preview  
+</div>
 
-Experience the future of academic analytics:  
 
-[![Dashboard Preview](https://github.com/user-attachments/assets/15b5d822-5dcd-4e5e-854a-993c6d1b896e)](https://autograde-student.vercel.app/)  
-*Click the image to explore the live demo*  
+
+
+
+### 🏠 Homepage  
+<img src="https://github.com/user-attachments/assets/9a6862fc-27e7-47b0-9f97-076dca4243bc" alt="Homepage" width="800"/>
+
+---
+
+### 🔐 Signup & Login  
+<img src="https://github.com/user-attachments/assets/d3d7179b-1ab9-4b07-98d8-279e3fc6b08d" alt="Login Page" width="800"/>
+<img src="https://github.com/user-attachments/assets/4f90c4b4-3b55-435b-991a-24901b46e4ae" alt="Login Page" width="800"/>
+
+---
+
+### 📚 Student Dashboard  
+<img src="https://github.com/user-attachments/assets/b7665410-1a84-4e59-8bd5-4c7fb619ef47" alt="Student Dashboard" width="800"/>
+
+---
+
+### 📊 Course Analytics & 📝 Answer Paper Viewer  
+<img src="https://github.com/user-attachments/assets/f7c7fa7d-4f40-43ee-afa5-9c46ec61f0de" alt="Analytics" width="800"/>
+<img src="https://github.com/user-attachments/assets/3460c29f-731b-4241-b9e9-27806eb1e8b7" alt="Answer Sheet View" width="800"/>
+
+
+ 
 
 ---
 
