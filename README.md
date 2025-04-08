@@ -86,10 +86,11 @@ Gain <strong>deep performance insights</strong> with our intelligent evaluation 
 ---
 
 ### 🔐 Signup & Login  
-<img src="https://github.com/user-attachments/assets/d3d7179b-1ab9-4b07-98d8-279e3fc6b08d" alt="Login Page" width="800"/>
-<img src="https://github.com/user-attachments/assets/4f90c4b4-3b55-435b-991a-24901b46e4ae" alt="Login Page" width="800"/>
+<img src="https://github.com/user-attachments/assets/0481c7d4-6836-45b6-9cd5-decad0a66b7c" alt="Login Page" width="800"/>
+<img src="https://github.com/user-attachments/assets/cca6f4a7-4106-48a3-839a-577958437aea" alt="Login Page" width="800"/>
 
 ---
+
 
 ### 📚 Student Dashboard  
 <img src="https://github.com/user-attachments/assets/b7665410-1a84-4e59-8bd5-4c7fb619ef47" alt="Student Dashboard" width="800"/>
