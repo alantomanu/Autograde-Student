@@ -32,7 +32,7 @@ function SignupContent() {
   );
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Check if we have OAuth data from URL parameters
+
   const isOAuth = Boolean(
     searchParams.get('oauth') === 'google' && 
     searchParams.get('email') && 
@@ -80,7 +80,7 @@ function SignupContent() {
       const data = await res.json();
       
       if (res.ok) {
-        // After successful registration, switch to login mode
+
         setIsLogin(true);
         setSuccessMessage('Registration successful! Sign in.');
         setError(null);
@@ -99,7 +99,7 @@ function SignupContent() {
     
     try {
       if (isOAuth) {
-        // For OAuth users, attempt to find and link account with student ID
+  
         const res = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -115,7 +115,7 @@ function SignupContent() {
         const data = await res.json();
         
         if (res.ok) {
-          // After successful registration, sign in with Google
+
           await signIn('google', {
             callbackUrl: '/',
             redirect: true,
@@ -145,12 +145,12 @@ function SignupContent() {
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
-    setError(null); // Clear error when toggling forms
+    setError(null); 
   };
 
   return (
     <div className="relative flex max-h-screen items-center justify-center bg-transparent px-4 py-12">
-      {/* Blurred background elements */}
+
       <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-purple-300 opacity-40 blur-3xl"></div>
       <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-indigo-300 opacity-40 blur-3xl"></div>
       <div className="absolute top-40 right-20 h-40 w-40 rounded-full bg-violet-400 opacity-30 blur-3xl"></div>
@@ -158,7 +158,7 @@ function SignupContent() {
       
       <div className="relative z-10 w-full max-w-4xl overflow-hidden rounded-3xl bg-white/60 shadow-xl backdrop-blur-lg">
         <div className="flex flex-col md:flex-row">
-          {/* Left panel - Welcome back */}
+
           <div className="bg-gradient-to-br from-purple-600 to-indigo-600 p-8 text-white md:w-5/12 md:p-10 rounded-l-3xl">
             <div className="mb-10">
               <div className="flex items-center space-x-2">

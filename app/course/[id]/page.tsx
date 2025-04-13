@@ -4,12 +4,12 @@ import { useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Worker } from '@react-pdf-viewer/core';
 
-// Dynamically import PDF viewer with no SSR
+
 const PDFViewer = dynamic(() => import('@react-pdf-viewer/core').then(mod => mod.Viewer), {
   ssr: false,
 });
 
-// Import the styles
+
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
 interface Feedback {
@@ -147,7 +147,7 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
-        {/* Answer Sheet Section - Increased Height */}
+        {/* Answer Sheet Section */}
         <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-800">Answer Sheet</h2>
@@ -213,7 +213,7 @@ export default function CourseDetailPage() {
                     </div>
                   </div>
 
-                  {/* Performance Insight */}
+
                   <div className="mb-3">
                     {marksLost === 0 ? (
                       <div className="flex items-center gap-2 text-green-600">
@@ -236,7 +236,7 @@ export default function CourseDetailPage() {
                     )}
                   </div>
 
-                  {/* Progress bar */}
+          
                   <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
                     <div 
                       className={`h-2 rounded-full transition-all duration-300 ${
@@ -246,7 +246,7 @@ export default function CourseDetailPage() {
                     ></div>
                   </div>
 
-                  {/* Feedback reason */}
+           
                   {item.reason ? (
                     <div className="mt-4 flex justify-center">
                       <div className="w-full p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">

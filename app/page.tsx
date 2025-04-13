@@ -56,10 +56,9 @@ interface StudentData {
   };
 }
 
-// Initialize font
 const outfit = Outfit({ subsets: ['latin'] });
 
-// Add auth hook
+
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
@@ -110,7 +109,7 @@ export default function Dashboard() {
 
 
   if (loading) {
-    // For logged-in users
+
     if (isAuthenticated) {
       return (
         <div className="min-h-screen bg-transparent">
@@ -173,7 +172,6 @@ export default function Dashboard() {
       );
     }
 
-    // For non-logged in users
     return (
       <div className="min-h-[calc(100vh-64px)] bg-transparent">
         <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
@@ -341,7 +339,7 @@ export default function Dashboard() {
     'Class Average': course.classAverage,
   }));
 
-  // Prepare data for pie chart with better calculations
+
   const COLORS = ['#22C55E', '#3B82F6', '#EAB308', '#F97316', '#EF4444'];
   const calculateRankCategory = () => {
     const rankPercentile = (overallPerformance.overallRank / overallPerformance.totalStudents) * 100;
